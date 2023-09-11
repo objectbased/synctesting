@@ -17,7 +17,7 @@ jobs:
       - name: Get PR Number
         run: |
           # Extract PR number from the merge commit message
-          PR_NUMBER=$(git log -n 1)
+          PR_NUMBER=$(git log -n 1 | grep -oE '#[0-9]+' | sed 's/#//')
           echo "PR Number: $PR_NUMBER"
         id: pr_number
 
