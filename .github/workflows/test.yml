@@ -1,0 +1,20 @@
+name: PR Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Get PR Message
+        run: |
+          PR_MESSAGE=$(git log --format=%B -n 1 ${{ github.sha }})
+          echo "PR Message: $PR_MESSAGE"
