@@ -14,7 +14,8 @@ jobs:
         with:
           ref: main
 
-      - name: Get PR Message
+      - name: Get PR Description
         run: |
-          PR_MESSAGE=$(git log --format=%B -n 2 ${{ github.sha }})
-          echo "PR Message: $PR_MESSAGE"
+          PR_NUMBER=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" | jq -r '.body')
+          echo "PR Description: $PR_NUMBER"
