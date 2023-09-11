@@ -16,5 +16,5 @@ jobs:
 
       - name: Get PR Message
         run: |
-          PR_MESSAGE=$(git log --format=%B -n 1 ${{ github.sha }})
+          PR_MESSAGE=$(git log --format=%B -n 2 ${{ github.sha }})
           echo "PR Message: $PR_MESSAGE"
