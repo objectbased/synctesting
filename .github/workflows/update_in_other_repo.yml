@@ -19,8 +19,8 @@ jobs:
         
       - name: get message
         run: |
-          message=$(git show ${{ github.sha }} --format=%s)
-          echo "message=$message" >> $GITHUB_ENV
+          commit_message=$(git log --format=%B -n 1 ${{ github.sha }} | grep -o '^[[:space:]]*[^[:space:]]\+[[:space:]]*$' | awk '{$1=$1};1')
+          echo "COMMIT_MESSAGE=${commit_message}" >> $GITHUB_ENV
           
       - name: Clone other repository
         run: |
@@ -41,12 +41,11 @@ jobs:
       - name: Commit changes
         env:
            FEATURE_BRANCH_NAME: ${{ env.feature_branch_name }}
-           MESSAGE: ${{ env.message }}
         run: |
           cd aws-testing
           git checkout -b $FEATURE_BRANCH_NAME
           git add .
-          git commit -m "$MESSAGE"
+          git commit -m "$COMMIT_MESSAGE"
           git push --set-upstream origin $FEATURE_BRANCH_NAME
           
       - name: Open pull request
