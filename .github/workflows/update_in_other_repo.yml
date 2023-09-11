@@ -22,7 +22,7 @@ jobs:
           commit_message=$(git log --format=%b -n 2 ${{ github.sha }})
           echo $commit_message
           echo "COMMIT_MESSAGE=${commit_message}" >> $GITHUB_ENV
-	  
+          
       - name: Clone other repository
         run: |
           git config --global user.email "action@github.com"
