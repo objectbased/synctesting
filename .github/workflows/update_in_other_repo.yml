@@ -21,6 +21,7 @@ jobs:
         run: |
           commit_message=$(git log --format=%b -n 2 ${{ github.sha }})
           echo "COMMIT_MESSAGE=${commit_message}" >> $GITHUB_ENV
+	  echo $commit_message	
           
       - name: Clone other repository
         run: |
