@@ -1,0 +1,61 @@
+name: Update Other Repository
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+    paths: ['Splunk/Detections/sec/local/savedsearches.conf']
+
+jobs:
+  update-code-in-other-repo:
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write
+      contents: read
+      
+    steps:
+      - name: Git Clone current repository
+        uses: actions/checkout@v3
+        
+      - name: get message
+        run: |
+          message=$(git show ${{ github.sha }} --format=%b)
+          echo "message=$message" >> $GITHUB_ENV
+          
+      - name: Clone other repository
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git clone https://github.com/objectbased/aws-testing.git
+          cd aws-testing
+          git remote set-url origin "https://objectbased:${{ secrets.ACCESS_TOKEN }}@github.com/objectbased/aws-testing.git"
+          
+      - name: Copy file to other repository
+        run: |
+          rsync -av --delete-after Splunk/Detections/sec/local/savedsearches.conf aws-testing/shcluster/apps/sec/local/savedsearches.conf
+          
+      - name: Set branch name and vars
+        run: |
+          echo "feature_branch_name=cyber-$(date +"%Y-%m-%d-%H-%M")-${{ github.sha }}" >> $GITHUB_ENV
+          
+      - name: Commit changes
+        env:
+           FEATURE_BRANCH_NAME: ${{ env.feature_branch_name }}
+           MESSAGE: ${{ env.message }}
+        run: |
+          cd aws-testing
+          git checkout -b $FEATURE_BRANCH_NAME
+          git add .
+          git commit -m "$MESSAGE"
+          git push --set-upstream origin $FEATURE_BRANCH_NAME
+          
+      - name: Open pull request
+        env:
+           FEATURE_BRANCH_NAME: ${{ env.feature_branch_name }}
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/objectbased/aws-testing/pulls \
+            -d '{"title": "Update Lookups from Sec Team repo", "body": "Workflow triggered to update latest commit in repo-abc-123 with lookup in repo-zfg-456\n\nCheck commit here: https://github.com/objectbased/ghactions/commit/${{ github.sha }}", "head": "'$FEATURE_BRANCH_NAME'", "base": "main"}'
