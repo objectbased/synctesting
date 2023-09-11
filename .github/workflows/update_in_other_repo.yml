@@ -19,7 +19,7 @@ jobs:
         
       - name: get message
         run: |
-          commit_message=$(git log --format=%B -n 1 ${{ github.sha }} | grep -o '^[[:space:]]*[^[:space:]]\+[[:space:]]*$' | awk '{$1=$1};1')
+          commit_message=$(git log --format=%b -n 1 ${{ github.sha }} | grep -o '^[[:space:]]*[^[:space:]]\+[[:space:]]*$' | awk '{$1=$1};1')
           echo "COMMIT_MESSAGE=${commit_message}" >> $GITHUB_ENV
           
       - name: Clone other repository
