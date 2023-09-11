@@ -19,10 +19,10 @@ jobs:
         
       - name: get message
         run: |
-          commit_message=$(git log --format=%b -n 2 ${{ github.sha }})
+          commit_message=$(git log --format=%b -n 2 ${{ github.sha }}).
+	  echo $commit_message
           echo "COMMIT_MESSAGE=${commit_message}" >> $GITHUB_ENV
-	  echo $commit_message	
-          
+	  
       - name: Clone other repository
         run: |
           git config --global user.email "action@github.com"
