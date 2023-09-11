@@ -14,8 +14,16 @@ jobs:
         with:
           ref: main
 
+      - name: Get PR Number
+        run: |
+          # Extract PR number from the merge commit message
+          PR_NUMBER=$(git log --merges --pretty=format:"%s" -n 1 | grep -oE '#[0-9]+' | sed 's/#//')
+          echo "PR Number: $PR_NUMBER"
+        id: pr_number
+
       - name: Get PR Description
         run: |
-          PR_NUMBER=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.number }}" | jq -r '.body')
-          echo "PR Description: $PR_NUMBER"
+          # Retrieve PR description using GitHub API
+          PR_DESCRIPTION=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.pr_number.outputs.PR_NUMBER }}" | jq -r '.body')
+          echo "PR Description: $PR_DESCRIPTION"
