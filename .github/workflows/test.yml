@@ -17,5 +17,5 @@ jobs:
       - name: Get PR Description
         run: |
           PR_NUMBER=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" | jq -r '.body')
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.number }}" | jq -r '.body')
           echo "PR Description: $PR_NUMBER"
