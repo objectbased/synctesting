@@ -25,6 +25,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git clone https://github.com/objectbased/aws-testing.git
           #git remote set-url origin "https://objectbased:${{ secrets.ACCESS_TOKEN }}@github.com/objectbased/aws-testing.git"
+          ls -lR
           cd aws-testing
           pwd
           
