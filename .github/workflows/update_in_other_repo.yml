@@ -16,20 +16,26 @@ jobs:
     steps:
       - name: Git Clone current repository
         uses: actions/checkout@v3
-        
-      - name: get message
-        run: |
-          commit_message=$(git log --format=%b -n 2 ${{ github.sha }})
-          echo $commit_message
-          echo "COMMIT_MESSAGE=${commit_message}" >> $GITHUB_ENV
-          
-      - name: Clone other repository
+ 
+      - name: Clone splunk repository
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git clone https://github.com/objectbased/aws-testing.git
+          git remote set-url origin https://github.com/objectbased/aws-testing.git
           cd aws-testing
-          git remote set-url origin "https://objectbased:${{ secrets.ACCESS_TOKEN }}@github.com/objectbased/aws-testing.git"
+          pwd
+          
+      - name: Get pull request number from detections repository
+        run: |
+          PR_NUMBER=$(git log -n 1 | grep -oE '#[0-9]+' | sed 's/#//')
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+
+      - name: Get pull request description
+        run: |
+          PR_DESCRIPTION=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER" | jq -r '.body')
+          echo "PR Description: $PR_DESCRIPTION"
+          echo "PR_DESCRIPTION=$PR_DESCRIPTION" >> $GITHUB_ENV
           
       - name: Copy file to other repository
         run: |
@@ -39,15 +45,14 @@ jobs:
         run: |
           echo "feature_branch_name=cyber-$(date +"%Y-%m-%d-%H-%M")-${{ github.sha }}" >> $GITHUB_ENV
           
-      - name: Commit changes
+      - name: Commit changes to splunk repository
         env:
            FEATURE_BRANCH_NAME: ${{ env.feature_branch_name }}
         run: |
-          cd aws-testing
           git checkout -b $FEATURE_BRANCH_NAME
           git add .
           git commit -m "$COMMIT_MESSAGE"
-          git push --set-upstream origin $FEATURE_BRANCH_NAME
+          git push origin $FEATURE_BRANCH_NAME
           
       - name: Open pull request
         env:
