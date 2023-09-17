@@ -43,7 +43,7 @@ jobs:
       - name: Copy file to other repository
         run: |
           pwd
-          rsync -av --delete-after /home/runner/work/synctesting/Splunk/Detections/sec/local/savedsearches.conf /home/runner/work/aws-testing/shcluster/apps/sec/local/savedsearches.conf
+          rsync -av --delete-after Splunk/Detections/sec/local/savedsearches.conf /home/runner/work/aws-testing/shcluster/apps/sec/local/savedsearches.conf
           
       - name: Set branch name and vars
         run: |
