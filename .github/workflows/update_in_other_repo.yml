@@ -68,6 +68,7 @@ jobs:
         env:
            FEATURE_BRANCH_NAME: ${{ env.feature_branch_name }}
         run: |
+          PR_DESCRIPTION=$(echo "$PR_DESCRIPTION" | sed ':a;N;$!ba;s/\n/\\n/g') # Replace newline characters with \n
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
