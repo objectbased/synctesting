@@ -20,6 +20,7 @@ jobs:
       - name: Clone splunk repository
         run: |
           cd ..
+          pwd
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git clone https://github.com/objectbased/aws-testing.git
