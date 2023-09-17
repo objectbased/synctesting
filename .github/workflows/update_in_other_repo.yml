@@ -41,13 +41,14 @@ jobs:
           #echo "PR_DESCRIPTION=$PR_DESCRIPTION" >> $GITHUB_ENV
 
 
+          #PR_DESCRIPTION=$(echo "$PR_DESCRIPTION" | sed ':a;N;$!ba;s/\n/\\\\n/g')
+          #echo "PR_DESCRIPTION=$PR_DESCRIPTION" >> $GITHUB_ENV
+
+          echo "PR_DESCRIPTION<<EOF" >> $GITHUB_ENV
+          echo "$PR_DESCRIPTION" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
           PR_DESCRIPTION=$(echo "$PR_DESCRIPTION" | sed ':a;N;$!ba;s/\n/\\\\n/g')
           echo "PR_DESCRIPTION=$PR_DESCRIPTION" >> $GITHUB_ENV
-
-          #echo "PR_DESCRIPTION<<EOF" >> $GITHUB_ENV
-          #echo "$PR_DESCRIPTION" >> $GITHUB_ENV
-          #echo "EOF" >> $GITHUB_ENV
-          #PR_DESCRIPTION="$(echo "$PR_DESCRIPTION" | tr '\n' '\\n')"
 
           echo "$PR_DESCRIPTION"
           
