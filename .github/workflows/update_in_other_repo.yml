@@ -53,7 +53,7 @@ jobs:
           cd ../../aws-testing
           git checkout -b $FEATURE_BRANCH_NAME
           git add .
-          git commit -m "$COMMIT_MESSAGE"
+          git commit -m "$PR_DESCRIPTION"
           git push origin $FEATURE_BRANCH_NAME
           
       - name: Open pull request
