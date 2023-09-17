@@ -24,8 +24,8 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git clone https://github.com/objectbased/aws-testing.git
-          #git remote set-url origin https://github.com/objectbased/aws-testing.git
-          #cd aws-testing
+          #git remote set-url origin "https://objectbased:${{ secrets.ACCESS_TOKEN }}@github.com/objectbased/aws-testing.git"
+          cd aws-testing
           pwd
           
       - name: Get pull request number from detections repository
@@ -41,7 +41,8 @@ jobs:
           
       - name: Copy file to other repository
         run: |
-          rsync -av --delete-after Splunk/Detections/sec/local/savedsearches.conf aws-testing/shcluster/apps/sec/local/savedsearches.conf
+          pwd
+          rsync -av --delete-after /home/runner/work/synctesting/Splunk/Detections/sec/local/savedsearches.conf /home/runner/work/aws-testing/shcluster/apps/sec/local/savedsearches.conf
           
       - name: Set branch name and vars
         run: |
