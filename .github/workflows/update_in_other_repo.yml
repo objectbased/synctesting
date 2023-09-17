@@ -50,7 +50,7 @@ jobs:
         env:
            FEATURE_BRANCH_NAME: ${{ env.feature_branch_name }}
         run: |
-          pwd
+          cd ../../aws-testing
           git checkout -b $FEATURE_BRANCH_NAME
           git add .
           git commit -m "$COMMIT_MESSAGE"
