@@ -20,14 +20,10 @@ jobs:
       - name: Clone splunk repository
         run: |
           cd ../..
-          pwd
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git clone https://github.com/objectbased/aws-testing.git
-          #git remote set-url origin "https://objectbased:${{ secrets.ACCESS_TOKEN }}@github.com/objectbased/aws-testing.git"
-          cd aws-testing
-          ls -la
-          pwd
+          git remote set-url origin "https://objectbased:${{ secrets.ACCESS_TOKEN }}@github.com/objectbased/aws-testing.git"
           
       - name: Get pull request number from detections repository
         run: |
