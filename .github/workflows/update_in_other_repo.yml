@@ -35,7 +35,7 @@ jobs:
         run: |
           PR_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER" | jq -r '.title, .body')
           PR_TITLE=$(echo "$PR_INFO" | head -n 1)
-          PR_DESCRIPTION=$(echo "$PR_INFO" | tail -n 1)
+          PR_DESCRIPTION=$(echo "$PR_INFO" | tail -n 10)
           echo "PR Title: $PR_TITLE"
           echo "PR Description: $PR_DESCRIPTION"
           echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
