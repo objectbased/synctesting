@@ -33,9 +33,17 @@ jobs:
 
       - name: Get pull request description
         run: |
-          PR_DESCRIPTION=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER" | jq -r '.body')
+          PR_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER" | jq -r '.title, .body')
+          PR_TITLE=$(echo "$PR_INFO" | head -n 1)
+          PR_DESCRIPTION=$(echo "$PR_INFO" | tail -n 1)
+          echo "PR Title: $PR_TITLE"
           echo "PR Description: $PR_DESCRIPTION"
+          echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
           echo "PR_DESCRIPTION=$PR_DESCRIPTION" >> $GITHUB_ENV
+
+          #PR_DESCRIPTION=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER" | jq -r '.body')
+          #echo "PR Description: $PR_DESCRIPTION"
+          #echo "PR_DESCRIPTION=$PR_DESCRIPTION" >> $GITHUB_ENV
           
       - name: Copy file to other repository
         run: |
@@ -65,4 +73,4 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/objectbased/aws-testing/pulls \
-            -d '{"title": "Update Lookups from Sec Team repo", "body": "Description:\n\n$PR_DESCRIPTION\n\nCheck pull request here: https://github.com/objectbased/synctesting/pull/$PR_NUMBER", "head": "'$FEATURE_BRANCH_NAME'", "base": "main"}'
+            -d '{"title": "$PR_TITLE", "body": "Description:\n\n$PR_DESCRIPTION\n\nCheck pull request here: https://github.com/objectbased/synctesting/pull/$PR_NUMBER", "head": "'$FEATURE_BRANCH_NAME'", "base": "main"}'
