@@ -19,7 +19,7 @@ jobs:
           # Extract PR number from the merge commit message
           PR_NUMBER=$(git log -n 1 | grep -oE '#[0-9]+' | sed 's/#//')
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
-          echo "${{ github.repository | split('/') | last }}"
+          echo "$(basename ${{ github.repository }})"
 
       - name: Get PR Description
         run: |
