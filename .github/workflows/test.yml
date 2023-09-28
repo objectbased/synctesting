@@ -27,11 +27,12 @@ jobs:
       - name: install expect
         run: |
           sudo apt install -y expect
-          sudo apt-get -y upgrade
+          sudo apt -y upgrade awscli
+          pip install --upgrade session-manager-plugin
           
       - name: Start a SSM session
         run: |
-          unbuffer aws ssm start-session --target "${{ secrets.AWS_INSTANCE_ID }}" --region us-west-2
+          unbuffer aws ssm start-session --target "${{ secrets.AWS_INSTANCE_ID }}" --region us-west-2 && ls
           
       - name: test
         run: |
