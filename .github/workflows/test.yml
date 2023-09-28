@@ -32,10 +32,7 @@ jobs:
         run: |
           unbuffer aws ssm start-session --target "${{ secrets.AWS_INSTANCE_ID }}" --region us-west-2 \
           --document-name 'AWS-StartNonInteractiveCommand' \
-          --parameters '{"command": [ 
-          "echo hello", 
-          "echo testing" 
-          ]}'
+          --parameters '{"command": ["echo hello", "echo test"]}'
           
       - name: test
         run: |
