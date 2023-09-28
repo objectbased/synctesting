@@ -26,7 +26,7 @@ jobs:
           
       - name: Start a SSM session
         run: |
-          apt install -y expect
+          sudo apt install -y expect
           unbuffer aws ssm start-session --target ${{ secrets.AWS_INSTANCE_ID }}
           ls
           pwd
