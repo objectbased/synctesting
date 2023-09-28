@@ -31,7 +31,7 @@ jobs:
       - name: Start a SSM session
         run: |
           unbuffer aws ssm start-session --target "${{ secrets.AWS_INSTANCE_ID }}" --region us-west-2 \
-          --document-name 'AWS-StartNonInteractiveCommand' \
+          --document-name 'AWS-RunShellScript' \
           --parameters '{"command": ["echo hello", "echo test"]}'
           
       - name: test
