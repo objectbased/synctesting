@@ -30,7 +30,7 @@ jobs:
           
       - name: Start a SSM session
         run: |
-          unbuffer aws ssm start-session --target ${{ secrets.AWS_INSTANCE_ID }} --region us-west-2
+          unbuffer aws ssm start-session --target "${{ secrets.AWS_INSTANCE_ID }}" --region us-west-2
           
       - name: test
         run: |
