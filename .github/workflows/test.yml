@@ -26,7 +26,7 @@ jobs:
           
       - name: Start a SSM session
         run: |
-          aws ssm start-session --target ${{ secrets.AWS_INSTANCE_ID }}
+          unbuffer aws ssm start-session --target ${{ secrets.AWS_INSTANCE_ID }}
           ls
 
       - name: Get PR Number
