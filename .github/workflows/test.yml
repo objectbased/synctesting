@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v4
