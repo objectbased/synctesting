@@ -27,7 +27,6 @@ jobs:
       - name: install expect
         run: |
           sudo apt install -y expect
-          sudo pip install --upgrade session-manager-plugin
           
       - name: Start a SSM session
         run: |
