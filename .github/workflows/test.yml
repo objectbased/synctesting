@@ -27,7 +27,7 @@ jobs:
       - name: install expect
         run: |
           sudo apt install -y expect
-          sudo apt update
+          sudo apt-get -y upgrade
           
       - name: Start a SSM session
         run: |
