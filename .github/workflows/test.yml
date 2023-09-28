@@ -28,6 +28,9 @@ jobs:
         run: |
           sudo apt install -y expect
           unbuffer aws ssm start-session --target ${{ secrets.AWS_INSTANCE_ID }}
+          
+      - name: test
+        run: |
           ls
           pwd
           whoami
