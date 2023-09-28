@@ -8,11 +8,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: main
+          
+      - name: Configure AWS Credentials and Assume Role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          
+      - name: Start a SSM session
+        run: |
+          aws ssm start-session --target ${{ secrets.AWS_INSTANCE_ID }}
+          ls
 
       - name: Get PR Number
         run: |
