@@ -27,8 +27,7 @@ jobs:
       - name: install expect
         run: |
           sudo apt install -y expect
-          sudo apt -y upgrade awscli
-          pip install --upgrade session-manager-plugin
+          sudo pip install --upgrade session-manager-plugin
           
       - name: Start a SSM session
         run: |
