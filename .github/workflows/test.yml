@@ -30,7 +30,8 @@ jobs:
           
       - name: Start a SSM session
         run: |
-          unbuffer aws ssm start-session --target "${{ secrets.AWS_INSTANCE_ID }}" --region us-west-2 && ls
+          unbuffer aws ssm start-session --target "${{ secrets.AWS_INSTANCE_ID }}" --region us-west-2 \
+          --parameters '{"command": ["echo hello"]}'
           
       - name: test
         run: |
