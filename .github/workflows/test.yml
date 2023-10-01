@@ -33,7 +33,8 @@ jobs:
           echo "::add-mask::${{ steps.pyscript.outputs.key }}"
           echo ${{ steps.pyscript.outputs.key }}
           pwd
-          
+          echo "${{ steps.pyscript.outputs.key }}" >> test.txt
+          cat test.txt
 
       - name: Get PR Number
         run: |
