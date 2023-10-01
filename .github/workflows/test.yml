@@ -35,7 +35,8 @@ jobs:
           pwd
           echo "${{ steps.pyscript.outputs.key }}" >> test.txt
           cat test.txt
-          git add .
+          git add test.txt
+          git commit -m "test"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/objectbased/synctesting.git
 
 
