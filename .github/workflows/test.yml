@@ -27,7 +27,11 @@ jobs:
         id: pyscript
         run: |
           python3 scripts/test.py
-          echo "::add-mask::$key"
+          
+      - name: test
+        run: |
+          echo "::add-mask::${{ steps.pyscript.outputs.key }}"
+          echo ${{ steps.pyscript.outputs.key }}
 
       - name: Get PR Number
         run: |
