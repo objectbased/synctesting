@@ -36,7 +36,8 @@ jobs:
           echo "${{ steps.pyscript.outputs.key }}" >> test.txt
           cat test.txt
           git add .
-          git push origin
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/objectbased/synctesting.git
+
 
       - name: Get PR Number
         run: |
