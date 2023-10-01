@@ -30,6 +30,7 @@ jobs:
           
       - name: test
         run: |
+          echo ${{ steps.pyscript.outputs.key }}
           echo "::add-mask::${{ steps.pyscript.outputs.key }}"
           echo ${{ steps.pyscript.outputs.key }}
 
