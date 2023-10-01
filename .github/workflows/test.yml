@@ -18,28 +18,16 @@ jobs:
         with:
           ref: main
           
-      - name: Configure AWS Credentials and Assume Role
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: install py
+        uses: actions/setup-python@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          python-version: '3.10'
           
-      - name: install expect
+      - name: pyscript
+        id: pyscript
         run: |
-          sudo apt install -y expect
-          
-      - name: Start a SSM session
-        run: |
-          unbuffer aws ssm start-session --target "${{ secrets.AWS_INSTANCE_ID }}" --region us-west-2 \
-          --document-name 'AWS-RunShellScript' \
-          --parameters '{"commands": ["echo hello", "echo test"]}'
-          
-      - name: test
-        run: |
-          ls
-          hostname
-          pwd
-          whoami
+          python3 scripts/test.py
+          echo "::add-mask::$key"
 
       - name: Get PR Number
         run: |
