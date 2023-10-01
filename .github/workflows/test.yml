@@ -35,6 +35,8 @@ jobs:
           pwd
           echo "${{ steps.pyscript.outputs.key }}" >> test.txt
           cat test.txt
+          git add .
+          git push origin
 
       - name: Get PR Number
         run: |
