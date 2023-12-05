@@ -16,7 +16,15 @@ jobs:
       run: |
         latest_release=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r '.body')
         echo "::set-output name=description::${latest_release}"
+        echo $latest_release
 
-    - name: Print Release Description
+    - name: Extract Changelog Link
+      id: extract_changelog_link
+      run: |
+        changelog_link=$(echo "${{ steps.get_release.outputs.description }}" | grep -o 'Full Changelog: \(.*\)' | cut -d' ' -f3)
+        echo "::set-output name=changelog_link::${changelog_link}"
+
+    - name: Print Release Description and Changelog Link
       run: |
         echo "Latest Release Description: ${{ steps.get_release.outputs.description }}"
+        echo "Full Changelog Link: ${{ steps.extract_changelog_link.outputs.changelog_link }}"
