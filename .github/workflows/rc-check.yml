@@ -1,0 +1,22 @@
+name: Read Latest Release Description
+
+on:
+  workflow_dispatch:
+
+jobs:
+  read-release-description:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Get Latest Release
+      id: get_release
+      run: |
+        latest_release=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r '.body')
+        echo "::set-output name=description::${latest_release}"
+
+    - name: Print Release Description
+      run: |
+        echo "Latest Release Description: ${{ steps.get_release.outputs.description }}"
